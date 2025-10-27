@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmIns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Confeitaria Pequena Flor</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-compatible" contente="ie-edge"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <h1>Confeitaria Pequena Flor</h1>
+                    <img class="imgLogo" src="./img/bolo.png">
+                </div>
+            </div>
+        </header>
+        <div id="listagem" class="container">
+            <h2>Listagem de pedidos</h2>
+            <div class="tabs">
+                <button class="tab-button active btn btn-info" data-tab="clientes-tab">Clientes</button>
+                <button class="tab-button btn btn-info" data-tab="pedidos-tab">Pedidos</button>
+            </div>
+
+            <div id="clientes-tab" class="tab-content active">
+                <h4>Lista de Clientes</h4>
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Telefone</th>
+                            <th>Endereço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cliente : ${clientes}">
+                            <td th:text="${cliente.nome}"></td>
+                            <td th:text="${cliente.email}"></td>
+                            <td th:text="${cliente.telefone}"></td>
+                            <td th:text="${cliente.endereco}"></td>
+                            <td>
+                            <a th:href="@{/excluir-cliente/{id}(id=${cliente.id})}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Tem certeza que deseja excluir este cliente?')">
+                                Excluir
+                            </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div id="pedido-tab" >
+                <h4>Lista de Pedidos</h4>
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Valor Unitário</th>
+                            <th>Valor Total</th>
+                            <th>Data Entrega</th>
+                            <th>Observações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="pedido : ${pedido}">
+                            <td th:text="${pedido.cliente.nome}"></td>
+                            <td th:text="${pedido.produto}"></td>
+                            <td th:text="${pedido.quantidade}"></td>
+                            <td th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorUn, 1, 2)}"></td>
+                            <td th:text="'R$ ' + ${#numbers.formatDecimal(pedido.quantidade * pedido.valorUn, 1, 2)}"></td>
+                            <td th:text="${#temporals.format(pedido.dataEntrega, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${pedido.observacoes}"></td>
+                            <td>
+                               <a th:href="@{/excluir-pedido/{id}(id=${pedido.id})}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Tem certeza que deseja excluir este pedido?')">
+                                Excluir
+                               </a> 
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>        
+            <hr>
+            <a th:href="@{/principal}" class="btn btn-danger">Voltar</a>
+        </div>
+
+        <footer>
+            <div class="container">
+                <p>&copy; 2025 Confeitaria PequenaFlor <br> WhatsApp:(11)911111-11111</p>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" ></script>
+    </body>
+</html>
